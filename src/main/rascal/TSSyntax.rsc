@@ -1,21 +1,22 @@
 module TSSyntax
 
-import TSLex;
+extend TSLex;
 
-start syntax Stmt = VariableStmt;
+start syntax Stmt = varstatement: VariableStmt;
 
-start syntax Decl = VariableDecl;
+start syntax Decl = vardeclaration: VariableDecl;
 
-syntax VariableStmt = "var" {VariableDecl ","}+ SemiColon?;
+syntax VariableStmt = variableStatement: "var" {VariableDecl ","}+ SemiColon?;
 
-syntax VariableDecl = Id Initialize?;
+syntax VariableDecl = variableDeclaration: Id Initialize?;
 
-syntax Initialize = "=" Exp;
+syntax Initialize = initialize: "=" Exp;
 
 start syntax Exp
         = var: Id
-        | Integer
-        | String
-        > left Exp "*" Exp
-        > left Exp "+" Exp
+        | integer: Integer
+        | string: String
+        > left mult: Exp "*" Exp
+        > left add: Exp "+" Exp
         ;
+        
